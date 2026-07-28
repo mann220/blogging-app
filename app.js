@@ -15,7 +15,7 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server Started at ${PORT}`);
 });
 
-mongoose.connect(process.env.MONGODB_URL)
+mongoose.connect(process.env.MONGO_URL)
     .then(() => {
         console.log("✅ MongoDB Connected Successfully!");
     })
