@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title><%= blog.title %></title>
+</head>
+<body>
+    <%- include("./partials/nav") %>
+    <div class="container mt-5" style="max-width: 800px;">
+        <h1 class="display-4 fw-bolder mb-3"><%= blog.title %></h1>
+        <div class="d-flex align-items-center mb-4">
+            <img src="<%= blog.createdBy.profileImageURL %>" alt="Author" 
+                 class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+            <div>
+                <h6 class="mb-0 fw-bold"><%= blog.createdBy.fullName %></h6>
+                <small class="text-muted">Published on <%= new Date(blog.createdAt).toLocaleDateString() %></small>
+            </div>
+        </div>
+        <img src="<%= blog.coverImageURL %>" 
+             class="img-fluid rounded shadow-sm mb-5" 
+             alt="Blog Cover" 
+             style="width: 100%; max-height: 450px; object-fit: cover;">
+        <div class="blog-body mb-5 text-dark" style="font-size: 1.15rem; line-height: 1.8; white-space: pre-wrap;"><%= blog.body %></div>
+    </div>
+
+    <!-- ================= COMMENT SECTION ================= -->
+<div class="mt-5 pt-5 border-top">
+    <h4>Comments (<%= locals.comments ? comments.length : 0 %>)</h4>
+
+    <!-- 1. The Comment Form (Only visible if logged in) -->
+    <% if (locals.user) { %>
+        <form action="/blog/comment/<%= blog._id %>" method="POST" class="mt-4 mb-3">
+            <div class="mb-3">
+                <textarea name="content" class="form-control" rows="3" placeholder="Share your thoughts..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">Post Comment</button>
+        </form>
+    <% } else { %>
+        <div class="alert alert-secondary mt-4 mb-5" role="alert">
+            Please <a href="/user/signin" class="alert-link">log in</a> to leave a comment.
+        </div>
+    <% } %>
+
+    <!-- 2. Displaying the Comments -->
+    <div class="mt-4">
+        <% if (locals.comments && comments.length > 0) { %>
+            <% comments.forEach(comment => { %>
+                
+                <div class="d-flex mb-4">
+                    <!-- User Profile Picture -->
+                    <img src="<%= comment.createdBy.profileImageURL %>" alt="Profile" 
+                         class="rounded-circle me-3 border" 
+                         style="width: 45px; height: 45px; object-fit: cover;">
+                    
+                    <!-- Comment Details -->
+                    <div class="bg-light p-3 rounded w-100">
+                        <h6 class="mb-1 fw-bold"><%= comment.createdBy.fullName %></h6>
+                        <p class="mb-0 text-dark"><%= comment.content %></p>
+                    </div>
+                </div>
+
+            <% }) %>
+        <% } else { %>
+            <p class="text-muted fst-italic">No comments yet. Be the first to share your thoughts!</p>
+        <% } %>
+    </div>
+</div>
+
+    <%- include("./partials/script") %>
+</body>
+</html>
