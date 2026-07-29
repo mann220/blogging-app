@@ -21,7 +21,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "blog_covers", // Creates a folder in your Cloudinary account
-    allowedFormats: ["jpeg", "png", "jpg"],
+    allowedFormats: ["jpeg", "png", "jpg","webp"],
   },
 });
 
